@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 import api from '../../services/api';
 
-import { Container, TopText, Input, Label, LoginBtn, LoginBtnText } from './styles';
+import { Container, TopText, Input, Label, LoginBtn, LoginBtnText, PassText, ForgotPassBtn, BtnContainer } from './styles';
 
 const Login: React.FC = () => {
   const [user, setUser] = useState('');
@@ -18,24 +19,33 @@ const Login: React.FC = () => {
       password: pass
       }
     })
-      .then(res => {
-        localStorage.setItem('token', res.data);
+      .then(async (res) => {
+        await AsyncStorage.setItem('token', res.data.token);
         navigate('Home');
       })
       .catch(err => console.log(err));
+  }
+
+  const navigateToForgotPassword = () => {
+    navigate('ForgotPassword');
   }
 
   return (
     <Container>
       <TopText>Olá!</TopText>
       <TopText>Faça seu login para continuar:</TopText>
-      <Label>USUÁRIO</Label>
-      <Input onChangeText={setUser} />
-      <Label>SENHA</Label>
-      <Input secureTextEntry onChangeText={setPass} />
-      <LoginBtn onPress={handleLogin}>
-        <LoginBtnText>LOGIN</LoginBtnText>
-      </LoginBtn>
+      <BtnContainer>
+        <Label>USUÁRIO</Label>
+        <Input onChangeText={setUser} />
+        <Label>SENHA</Label>
+        <Input secureTextEntry onChangeText={setPass} />
+        <ForgotPassBtn onPress={navigateToForgotPassword}>
+          <PassText>ESQUECI MINHA SENHA</PassText>
+        </ForgotPassBtn>
+        <LoginBtn onPress={handleLogin}>
+          <LoginBtnText>LOGIN</LoginBtnText>
+        </LoginBtn>
+      </BtnContainer>
     </Container>
   );
 }
