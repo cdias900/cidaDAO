@@ -10,6 +10,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     async function loadPosition() {
+      try {
       const { status } = await Location.requestPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert(
@@ -22,6 +23,9 @@ const Home: React.FC = () => {
 
       const { latitude, longitude } = location.coords;
       setInitialPosition([latitude, longitude]);
+      } catch(e) {
+        Alert.alert('Erro ao obter localização');
+      }
     }
     loadPosition();
   }, []);
