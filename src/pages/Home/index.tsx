@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { Text, Alert } from 'react-native';
 
-import { Container, Map, BottomBar, BottomBarText } from './styles';
+import DrawerToggle from '../../components/DrawerToggle';
+
+import { Container, Map, BottomBar, BottomBarText, MapOverlay } from './styles';
 
 const Home: React.FC = () => {
-  const { navigate, reset } = useNavigation();
+  const { navigate, reset, dispatch } = useNavigation();
   const [initialPosition, setInitialPosition] = useState<[number, number]>([0,0]);
   const [token, setToken] = useState('');
 
@@ -28,24 +30,28 @@ const Home: React.FC = () => {
   useEffect(() => {
     async function loadPosition() {
       try {
-      const { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert(
-          'Oooops...',
-          'Precisamos de sua permissão para obter a localização'
-        );
-        return;
-      }
-      const location = await Location.getCurrentPositionAsync();
+        const { status } = await Location.requestPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert(
+            'Oooops...',
+            'Precisamos de sua permissão para obter a localização'
+          );
+          return;
+        }
+        const location = await Location.getCurrentPositionAsync();
 
-      const { latitude, longitude } = location.coords;
-      setInitialPosition([latitude, longitude]);
+        const { latitude, longitude } = location.coords;
+        setInitialPosition([latitude, longitude]);
       } catch(e) {
         Alert.alert('Erro ao obter localização');
       }
     }
     loadPosition();
   }, []);
+
+  const toggleDrawer = () => {
+    dispatch(DrawerActions.toggleDrawer());
+  }
 
   return (
     <Container>
@@ -68,6 +74,8 @@ const Home: React.FC = () => {
             </Marker>
         </Map>
       )}
+      <DrawerToggle toggleDrawer={toggleDrawer} />
+      <MapOverlay />
       <BottomBar>
         <BottomBarText>Perto de Você</BottomBarText>
       </BottomBar>

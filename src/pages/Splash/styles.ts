@@ -38,3 +38,8 @@ export const RegisterText = styled(Text)`
   font-weight: 500;
   color: #fff;
 `;
+
+export const Logo = styled.Image`
+  width: 380px;
+  height: 380px;
+`;

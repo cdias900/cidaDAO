@@ -63,3 +63,8 @@ export const ForgotPassBtn = styled.TouchableOpacity`
 export const PassText = styled.Text`
   color: #fff;
 `;
+
+export const Name = styled.Image`
+  width: 256px;
+  height: 100px;
+`;

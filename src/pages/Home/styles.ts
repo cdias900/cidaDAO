@@ -28,6 +28,14 @@ export const BottomBarText = styled.Text`
   font-size: 24px;
 `;
 
+export const MapOverlay = styled.View`
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  height: 100%;
+  width: 20px;
+`;
 
 export const Map = styled(MapView)`
   width: 100%;

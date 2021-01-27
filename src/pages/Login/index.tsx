@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { Image } from 'react-native';
 
 import api from '../../services/api';
 
-import { Container, TopText, Input, Label, LoginBtn, LoginBtnText, PassText, ForgotPassBtn, BtnContainer } from './styles';
+import { Container, TopText, Input, Label, LoginBtn, LoginBtnText, PassText, ForgotPassBtn, BtnContainer, Name } from './styles';
 
 const Login: React.FC = () => {
   const [user, setUser] = useState('');
@@ -32,6 +33,7 @@ const Login: React.FC = () => {
 
   return (
     <Container>
+      <Name source={require('../../assets/name.png')} />
       <TopText>Olá!</TopText>
       <TopText>Faça seu login para continuar:</TopText>
       <BtnContainer>
