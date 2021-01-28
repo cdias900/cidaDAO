@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { Image } from 'react-native';
 
 import api from '../../services/api';
 
