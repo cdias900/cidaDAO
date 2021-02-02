@@ -3,12 +3,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { Text, Alert } from 'react-native';
+import { Alert } from 'react-native';
+import { GEOCODING_KEY } from '@env';
 
 import DrawerToggle from '../../components/DrawerToggle';
 import api from '../../services/api';
 
-import { Container, Map, BottomBar, BottomBarText, MapOverlay } from './styles';
+import {
+  Container,
+  Map,
+  BottomBar,
+  BottomBarText,
+  MapOverlay,
+  BottomBarInput,
+  BottomBarInputView,
+  AddressesContainer,
+  AdressTextButton,
+  AddressText
+} from './styles';
 
 interface WishData {
   _id: string;
@@ -20,11 +32,26 @@ interface WishData {
   longitude: number;
 }
 
+interface AddressData {
+  displayLatLng: {
+    lat: number;
+    lng: number;
+  };
+  postalCode: string;
+  street?: string;
+  adminArea1: string;
+  adminArea3: string;
+  adminArea6: string;
+}
+
 const Home: React.FC = () => {
   const { reset, dispatch } = useNavigation();
-  const [initialPosition, setInitialPosition] = useState<[number, number, number]>([0,0,1]);
+  const [position, setPosition] = useState<[number, number, number]>([0,0,1]);
   const [token, setToken] = useState('');
   const [wishes, setWishes] = useState<WishData[]>([]);
+  const [address, setAddress] = useState('');
+  const [searchResults, setSearchResults] = useState<AddressData[]>([]);
+  const [showSearchResults, setShowSearchResult] = useState(false);
 
   useEffect(() => {
     async function getToken() {
@@ -53,10 +80,10 @@ const Home: React.FC = () => {
         const location = await Location.getCurrentPositionAsync();
 
         const { latitude, longitude } = location.coords;
-        setInitialPosition([latitude, longitude, 0.014]);
+        setPosition([latitude, longitude, 0.014]);
       } catch(e) {
         Alert.alert('Erro ao obter localização');
-        setInitialPosition([-15.8862662, -47.8119861, 10]);
+        setPosition([-15.8862662, -47.8119861, 10]);
       }
     }
     loadPosition();
@@ -73,19 +100,41 @@ const Home: React.FC = () => {
       .catch(err => console.log(err));
   }, [token]);
 
+  useEffect(() => {
+    if(address !== '') {
+      const timer = setTimeout(() => {
+        api.get(`http://open.mapquestapi.com/geocoding/v1/address?key=${GEOCODING_KEY}&location=${address}`)
+          .then(res => {
+            console.log(res.data);
+            setSearchResults(res.data.results[0].locations);
+            setShowSearchResult(true);
+          })
+          .catch(err => console.log(err));
+      }, 500)
+      return () => clearTimeout(timer);
+    }
+    setSearchResults([]);
+    setShowSearchResult(false);
+  }, [address])
+
   const toggleDrawer = () => {
     dispatch(DrawerActions.toggleDrawer());
   }
 
+  const moveToPosition = (latitude: number, longitude: number) => {
+    setAddress('');
+    setPosition([latitude, longitude, 0.014]);
+  }
+
   return (
     <Container>
-      {initialPosition[0] !== 0 && (
+      {position[0] !== 0 && (
         <Map
-          initialRegion={{
-            latitude: initialPosition[0],
-            longitude: initialPosition[1],
-            latitudeDelta: initialPosition[2],
-            longitudeDelta: initialPosition[2],
+          region={{
+            latitude: position[0],
+            longitude: position[1],
+            latitudeDelta: position[2],
+            longitudeDelta: position[2],
           }}
           showsMyLocationButton
           showsCompass
@@ -98,6 +147,7 @@ const Home: React.FC = () => {
                 longitude: wish.longitude,
               }}
               title={wish.title}
+              onPress={() => console.log(wish)}
             />
           ))}
         </Map>
@@ -106,6 +156,28 @@ const Home: React.FC = () => {
       <MapOverlay />
       <BottomBar>
         <BottomBarText>Perto de Você</BottomBarText>
+        <BottomBarInputView>
+          <BottomBarInput
+            placeholder="OU BUSQUE UM ENDEREÇO"
+            placeholderTextColor="#737373"
+            value={address}
+            onChangeText={setAddress}
+          />
+          {showSearchResults && (
+            <AddressesContainer>
+              {searchResults.map((result) => (
+                <AdressTextButton
+                  key={result.displayLatLng.lat}
+                  onPress={() => moveToPosition(result.displayLatLng.lat, result.displayLatLng.lng)}
+                >
+                  <AddressText>
+                    {`${result.street}${result.street && ', '}${result.adminArea6}, ${result.adminArea3}, ${result.adminArea1} - ${result.postalCode}`}
+                  </AddressText>
+                </AdressTextButton>
+              ))}
+            </AddressesContainer>
+          )}
+        </BottomBarInputView>
       </BottomBar>
     </Container>
   );
