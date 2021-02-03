@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import api from '../../services/api';
+import { wishTypes } from '../../constants';
 
 import {
   Container,
@@ -54,7 +55,6 @@ const CreateWish: React.FC = () => {
         if(isMounted) setInitialPosition([latitude, longitude, 0.014]);
       } catch(e) {
         if(isMounted) {
-          Alert.alert('Erro ao obter localização');
           setInitialPosition([-15.8862662, -47.8119861, 10]);
         }
       }
@@ -173,18 +173,7 @@ const CreateWish: React.FC = () => {
       <Label>Tipo</Label>
       <RNPickerSelect
         useNativeAndroidPickerStyle={false}
-        items={[
-          {
-            label: 'Infraestrutura',
-            value: 'infrastructure',
-            key: 'infrastructure'
-          },
-          {
-            label: 'Lazer',
-            value: 'recreation',
-            key: 'recreation'
-          }
-        ]}
+        items={wishTypes}
         value={type}
         onValueChange={value => setType(value)}
         style={pickerStyle}

@@ -17,12 +17,12 @@ export const BottomBar = styled.View`
 `;
 
 export const BottomBarText = styled.Text`
-  background-color: #d9d9d9;
+  background-color: #2b85b8;
   text-align: center;
   text-align-vertical: center;
   width: 100%;
   height: 80px;
-  color: #737373;
+  color: #fff;
   font-weight: 700;
   font-size: 24px;
 `;
@@ -36,8 +36,8 @@ export const BottomBarInputView = styled.View`
 `;
 
 export const BottomBarInput = styled.TextInput`
-  background-color: #d9d9d9;
-  color: #737373;
+  background-color: #4697c6;
+  color: #fff;
   padding: 4px 8px;
   width: 300px;
   margin: 16px;

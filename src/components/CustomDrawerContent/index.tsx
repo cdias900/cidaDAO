@@ -30,7 +30,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps<DrawerContentOpt
       <DrawerItem
         style={blueStyle}
         label={() => <BlueLabelText>Mensagens</BlueLabelText>}
-        onPress={() => {}}
+        onPress={() => props.navigation.navigate('Messages')}
       />
       <DrawerItem
         style={whiteStyle}

@@ -8,8 +8,9 @@ import { GEOCODING_KEY } from '@env';
 import { Text } from 'react-native';
 
 import DrawerToggle from '../../components/DrawerToggle';
+import geoApi from '../../services/geoApi';
 import api from '../../services/api';
-import { WishData } from '../WishDetail';
+import { WishData, AddressData } from '../WishDetail';
 
 import {
   Container,
@@ -23,18 +24,6 @@ import {
   AdressTextButton,
   AddressText
 } from './styles';
-
-interface AddressData {
-  displayLatLng: {
-    lat: number;
-    lng: number;
-  };
-  postalCode: string;
-  street?: string;
-  adminArea1: string;
-  adminArea3: string;
-  adminArea6: string;
-}
 
 const Home: React.FC = () => {
   const { reset, dispatch, navigate } = useNavigation();
@@ -74,7 +63,7 @@ const Home: React.FC = () => {
         const { latitude, longitude } = location.coords;
         setPosition([latitude, longitude, 0.014]);
       } catch(e) {
-        Alert.alert('Erro ao obter localização');
+        // Alert.alert('Erro ao obter localização');
         setPosition([-15.8862662, -47.8119861, 10]);
       }
     }
@@ -95,7 +84,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     if(address !== '') {
       const timer = setTimeout(() => {
-        api.get(`http://open.mapquestapi.com/geocoding/v1/address?key=${GEOCODING_KEY}&location=${address}`)
+        geoApi.get(`/address?key=${GEOCODING_KEY}&location=${address}`)
           .then(res => {
             console.log(res.data);
             setSearchResults(res.data.results[0].locations);
@@ -139,7 +128,7 @@ const Home: React.FC = () => {
                 longitude: wish.longitude,
               }}
               title={wish.title}
-              onCalloutPress={() => navigate('WishDetail',{ wish })}
+              onCalloutPress={() => navigate('WishDetail',{ id: wish._id })}
             >
               <Callout>
                 <Text style={{ fontWeight: '700', fontSize: 16 }}>
@@ -160,15 +149,15 @@ const Home: React.FC = () => {
         <BottomBarInputView>
           <BottomBarInput
             placeholder="OU BUSQUE UM ENDEREÇO"
-            placeholderTextColor="#737373"
+            placeholderTextColor="#fff"
             value={address}
             onChangeText={setAddress}
           />
           {showSearchResults && (
             <AddressesContainer>
-              {searchResults.map((result) => (
+              {searchResults.map((result, index) => (
                 <AdressTextButton
-                  key={result.displayLatLng.lat}
+                  key={result.displayLatLng.lat + index}
                   onPress={() => moveToPosition(result.displayLatLng.lat, result.displayLatLng.lng)}
                 >
                   <AddressText>

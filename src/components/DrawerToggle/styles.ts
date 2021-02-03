@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity`
-  background-color: #d9d9d9;
+  background-color: #2b85b8;
   border-radius: 100px;
   padding: 8px;
   width: 55px;
@@ -15,7 +15,7 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const Strip = styled.View`
-  background-color: #000;
+  background-color: #fff;
   width: 75%;
   height: 5px;
 `;
