@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { Marker } from 'react-native-maps';
+import { Callout, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
 import { GEOCODING_KEY } from '@env';
+import { Text } from 'react-native';
 
 import DrawerToggle from '../../components/DrawerToggle';
 import api from '../../services/api';
+import { WishData } from '../WishDetail';
 
 import {
   Container,
@@ -22,16 +24,6 @@ import {
   AddressText
 } from './styles';
 
-interface WishData {
-  _id: string;
-  title: string;
-  type: string;
-  description?: string;
-  images: string[];
-  latitude: number;
-  longitude: number;
-}
-
 interface AddressData {
   displayLatLng: {
     lat: number;
@@ -45,7 +37,7 @@ interface AddressData {
 }
 
 const Home: React.FC = () => {
-  const { reset, dispatch } = useNavigation();
+  const { reset, dispatch, navigate } = useNavigation();
   const [position, setPosition] = useState<[number, number, number]>([0,0,1]);
   const [token, setToken] = useState('');
   const [wishes, setWishes] = useState<WishData[]>([]);
@@ -147,8 +139,17 @@ const Home: React.FC = () => {
                 longitude: wish.longitude,
               }}
               title={wish.title}
-              onPress={() => console.log(wish)}
-            />
+              onCalloutPress={() => navigate('WishDetail',{ wish })}
+            >
+              <Callout>
+                <Text style={{ fontWeight: '700', fontSize: 16 }}>
+                  {wish.title}
+                </Text>
+                <Text>
+                  {wish.description}
+                </Text>
+              </Callout>
+            </Marker>
           ))}
         </Map>
       )}

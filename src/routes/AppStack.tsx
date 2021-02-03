@@ -9,6 +9,7 @@ import ForgotPassword from '../pages/ForgotPassword';
 import DrawerTabs from './DrawerTabs';
 import Profile from '../pages/Profile';
 import CreateWish from '../pages/CreateWish';
+import WishDetail from '../pages/WishDetail';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -23,6 +24,7 @@ const AppStack: React.FC = () => {
         <Screen name="ForgotPassword" component={ForgotPassword} />
         <Screen name="Profile" component={Profile} />
         <Screen name="CreateWish" component={CreateWish} />
+        <Screen name="WishDetail" component={WishDetail} />
       </Navigator>
     </NavigationContainer>
   );
