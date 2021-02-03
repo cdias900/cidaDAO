@@ -62,7 +62,7 @@ export const LikeButtonText = styled.Text`
 export const LikeIcon = styled.Image`
   width: 48px;
   height: 48px;
-  tint-color: ${(props: Props) => props.liked ? '#ff914d' : '#d9d9d9'}
+  tint-color: ${(props: Props) => props.liked ? '#ff914d' : '#d9d9d9'};
 `;
 
 export const CloseButton = styled.Image`

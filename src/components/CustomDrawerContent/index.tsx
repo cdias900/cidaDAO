@@ -5,7 +5,6 @@ import {
   DrawerContentScrollView,
   DrawerItem
 } from '@react-navigation/drawer';
-import { Text } from 'react-native';
 
 import { blueStyle, whiteStyle, ProfilePic, ProfilePicContainer, ProfileText, BlueLabelText, LabelText } from './styles';
 

@@ -129,6 +129,7 @@ const Home: React.FC = () => {
               }}
               title={wish.title}
               onCalloutPress={() => navigate('WishDetail',{ id: wish._id })}
+              image={require('../../assets/marker.png')}
             >
               <Callout>
                 <Text style={{ fontWeight: '700', fontSize: 16 }}>

@@ -151,7 +151,7 @@ const WishDetail: React.FC = () => {
       <Title>Local</Title>
       {address.length > 0 && (
         <Description>
-          {`${address[0].street}${address[0].street && ', '}${address[0].adminArea6}, ${address[0].adminArea5}, ${address[0].adminArea3}, ${address[0].adminArea1} - ${address[0].postalCode}`}
+          {`${address[0].street}${address[0].street && ', '}, ${address[0].adminArea5}, ${address[0].adminArea3}, ${address[0].adminArea1} - ${address[0].postalCode}`}
         </Description>
       )}
       <Title>Tipo</Title>

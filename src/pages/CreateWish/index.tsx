@@ -158,6 +158,7 @@ const CreateWish: React.FC = () => {
                   latitude: marker[0],
                   longitude: marker[1],
                 }}
+                image={require('../../assets/marker.png')}
               />
             )}
           </Map>
