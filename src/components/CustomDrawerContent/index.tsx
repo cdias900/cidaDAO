@@ -9,6 +9,12 @@ import {
 import { blueStyle, whiteStyle, ProfilePic, ProfilePicContainer, ProfileText, BlueLabelText, LabelText } from './styles';
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = (props) => {
+
+  const navigate = (route: string) => {
+    props.navigation.toggleDrawer();
+    props.navigation.navigate(route);
+  }
+
   return (
     <DrawerContentScrollView {...props} style={{ padding: 0 }}>
       <DrawerItem
@@ -24,17 +30,17 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps<DrawerContentOpt
       <DrawerItem
         style={blueStyle}
         label={() => <BlueLabelText>Perfil</BlueLabelText>}
-        onPress={() => props.navigation.navigate('Profile')}
+        onPress={() => navigate('Profile')}
       />
       <DrawerItem
         style={blueStyle}
         label={() => <BlueLabelText>Mensagens</BlueLabelText>}
-        onPress={() => props.navigation.navigate('Messages')}
+        onPress={() => navigate('Messages')}
       />
       <DrawerItem
         style={whiteStyle}
         label={() => <LabelText>Cadastre um desejo</LabelText>}
-        onPress={() => props.navigation.navigate('CreateWish')}
+        onPress={() => navigate('CreateWish')}
       />
       <DrawerItem
         style={whiteStyle}
@@ -58,7 +64,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps<DrawerContentOpt
       />
       <DrawerItem
         style={whiteStyle}
-        label={() => <LabelText>Encontre multirões</LabelText>}
+        label={() => <LabelText>Encontre mutirões</LabelText>}
         onPress={() => {}}
       />
       <DrawerItem

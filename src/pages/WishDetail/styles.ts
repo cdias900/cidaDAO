@@ -67,6 +67,7 @@ export const LikeIcon = styled.Image`
 
 export const CloseButton = styled.Image`
   margin-top: 8px;
+  margin-bottom: 8px;
   width: 24px;
   height: 24px;
 `;

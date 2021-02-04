@@ -20,7 +20,7 @@ export const SubTitle = styled.Text`
 export const Title = styled(SubTitle)`
   font-weight: 700;
   font-size: 24px;
-  margin-top: 8px;
+  margin-top: 16px;
 `;
 
 export const Label = styled(SubTitle)`

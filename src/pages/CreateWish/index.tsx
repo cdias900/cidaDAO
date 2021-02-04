@@ -34,7 +34,7 @@ const CreateWish: React.FC = () => {
   const [initialPosition, setInitialPosition] = useState<[number, number, number]>([0,0,1]);
   const [marker, setMarker] = useState<[number, number]>([0,0]);
   const [images, setImages] = useState<string[]>([]);
-  const { reset } = useNavigation();
+  const { reset, goBack } = useNavigation();
 
   useEffect(() => {
     let isMounted = true;
@@ -60,7 +60,7 @@ const CreateWish: React.FC = () => {
       }
     }
     loadPosition();
-    return () => { isMounted = false }
+    return () => { isMounted = false };
   }, []);
 
   const handleMapPress = (e: MapEvent<{}>) => {
@@ -127,14 +127,14 @@ const CreateWish: React.FC = () => {
         goToHome();
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         Alert.alert('Erro ao cadastrar desejo')
       });
   }
 
   return (
     <Container>
-      <TouchableOpacity onPress={goToHome}>
+      <TouchableOpacity onPress={goBack}>
         <CloseButton source={require('../../assets/close-button.png')} />
       </TouchableOpacity>
       <Title>Cadastre um desejo</Title>

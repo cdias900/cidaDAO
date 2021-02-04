@@ -37,17 +37,33 @@ const Home: React.FC = () => {
   useEffect(() => {
     async function getToken() {
       const token = await AsyncStorage.getItem('token');
-      if(!token)
-        return reset({
+      if(!token) {
+        reset({
           index: 1,
           routes: [{ name: 'Splash' }, { name: 'Login' }],
         });
-      setToken(token);
+        return;
+      }
+      api.get('/user', {
+        headers: {
+          authorization: token,
+        }
+      })
+        .then(() => setToken(token))
+        .catch(err => {
+          console.log(err);
+          AsyncStorage.removeItem('token');
+          reset({
+            index: 1,
+            routes: [{ name: 'Splash' }, { name: 'Login' }],
+          });
+        });
     }
     getToken();
   }, [])
 
   useEffect(() => {
+    let isMounted = true;
     async function loadPosition() {
       try {
         const { status } = await Location.requestPermissionsAsync();
@@ -61,24 +77,29 @@ const Home: React.FC = () => {
         const location = await Location.getCurrentPositionAsync();
 
         const { latitude, longitude } = location.coords;
-        setPosition([latitude, longitude, 0.014]);
+        if(isMounted) setPosition([latitude, longitude, 0.014]);
       } catch(e) {
         // Alert.alert('Erro ao obter localização');
-        setPosition([-15.8862662, -47.8119861, 10]);
+        if(isMounted) setPosition([-15.8862662, -47.8119861, 10]);
       }
     }
     loadPosition();
+    return () => { isMounted = false };
   }, []);
 
   useEffect(() => {
     if(token === '') return;
+    let isMounted = true;
     api.get<WishData[]>('/wishes', {
       headers: {
         authorization: token
       }
     })
-      .then(res => setWishes(res.data))
+      .then(res => {
+        if(isMounted) setWishes(res.data);
+      })
       .catch(err => console.log(err));
+    return () => { isMounted = false };
   }, [token]);
 
   useEffect(() => {
@@ -146,7 +167,7 @@ const Home: React.FC = () => {
       <DrawerToggle toggleDrawer={toggleDrawer} />
       <MapOverlay />
       <BottomBar>
-        <BottomBarText>Perto de Você</BottomBarText>
+        <BottomBarText>PERTO DE VOCÊ</BottomBarText>
         <BottomBarInputView>
           <BottomBarInput
             placeholder="OU BUSQUE UM ENDEREÇO"

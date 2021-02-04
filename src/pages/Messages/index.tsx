@@ -51,12 +51,22 @@ const Messages: React.FC = () => {
           <Msg>Conteúdo da mensagem</Msg>
         </UserContainer>
       </MsgContainer>
-      <MsgContainer last>
+      <MsgContainer>
         <UserImage source={require('../../assets/profile.png')} />
         <UserContainer>
           <NameContainer>
             <Name>Usuário3</Name>
             <Username>@usuário3</Username>
+          </NameContainer>
+          <Msg>Conteúdo da mensagem</Msg>
+        </UserContainer>
+      </MsgContainer>
+      <MsgContainer last>
+        <UserImage source={require('../../assets/profile.png')} />
+        <UserContainer>
+          <NameContainer>
+            <Name>Usuário4</Name>
+            <Username>@usuário4</Username>
           </NameContainer>
           <Msg>Conteúdo da mensagem</Msg>
         </UserContainer>
